@@ -17,11 +17,9 @@ const Mission = () => {
   ];
 
   return (
-    <section className="py-24 bg-background relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
-      
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto text-center mb-16">
+    <section id="about" className="py-24 bg-muted/30">
+      <div className="container mx-auto px-4">
+        <div className="max-w-4xl mx-auto text-center mb-16 scroll-animate">
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
             Наша миссия
           </h2>
@@ -36,7 +34,7 @@ const Mission = () => {
           {features.map((feature, index) => (
             <div 
               key={index}
-              className="p-8 rounded-xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5"
+              className="p-8 rounded-xl bg-card/40 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 scroll-animate"
             >
               <div className="flex items-start gap-4">
                 <div className="flex-shrink-0">

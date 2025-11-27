@@ -45,9 +45,15 @@ const Services = () => {
   ];
 
   return (
-    <section className="py-24 bg-muted/30">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+    <section id="services" className="py-24 bg-background relative overflow-hidden">
+      {/* Background pattern */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(65,124,252,0.15),transparent_50%)]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,rgba(17,70,184,0.15),transparent_50%)]"></div>
+      </div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center mb-16 scroll-animate">
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
             Три направления деятельности
           </h2>
@@ -62,7 +68,7 @@ const Services = () => {
             return (
               <Card 
                 key={index} 
-                className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:shadow-primary/5 group"
+                className="bg-card/40 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:shadow-primary/5 group scroll-animate"
               >
                 <CardHeader>
                   <div className={`w-14 h-14 rounded-lg bg-gradient-to-br ${service.gradient} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
