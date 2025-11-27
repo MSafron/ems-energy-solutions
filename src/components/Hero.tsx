@@ -1,16 +1,23 @@
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/emc3-logo.png";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-background via-background to-primary/5">
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxwYXR0ZXJuIGlkPSJncmlkIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiPjxwYXRoIGQ9Ik0gNDAgMCBMIDAgMCAwIDQwIiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4wMykiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')] opacity-40" />
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background pt-20">
+      {/* Animated Background */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-primary/10"></div>
+        <div className="absolute inset-0 hero-animation"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(65,124,252,0.1),transparent_50%)]"></div>
+      </div>
+      
+      {/* Overlay for text readability */}
+      <div className="absolute inset-0 bg-background/40 backdrop-blur-[2px]"></div>
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
+        <div className="max-w-4xl mx-auto text-center space-y-8 animate-fade-in-up">
           <div className="inline-block mb-4">
-            <span className="text-7xl md:text-9xl font-bold bg-gradient-to-r from-primary via-primary to-primary/60 bg-clip-text text-transparent">
-              ЕМС.3
-            </span>
+            <img src={logo} alt="ЕМС.3" className="h-32 md:h-40 lg:h-48 w-auto mx-auto" />
           </div>
           
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
@@ -27,7 +34,7 @@ const Hero = () => {
             <Button size="lg" className="w-full sm:w-auto text-lg px-8 py-6">
               Смотреть каталог
             </Button>
-            <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg px-8 py-6">
+            <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg px-8 py-6 border-2">
               Связаться с нами
             </Button>
           </div>

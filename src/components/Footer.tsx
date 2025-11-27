@@ -1,10 +1,12 @@
+import logo from "@/assets/emc3-logo.png";
+
 const Footer = () => {
   return (
-    <footer className="py-8 bg-card/30 backdrop-blur-sm border-t border-border/50">
+    <footer className="py-8 bg-background border-t border-border/50">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="text-center md:text-left">
-            <div className="text-2xl font-bold text-primary mb-2">ЕМС.3</div>
+          <div className="text-center md:text-left flex flex-col items-center md:items-start gap-2">
+            <img src={logo} alt="ЕМС.3" className="h-8 w-auto" />
             <p className="text-sm text-muted-foreground">
               © 2009-2025 Все права защищены
             </p>
