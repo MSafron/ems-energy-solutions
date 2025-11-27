@@ -109,6 +109,15 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
     font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
   }
+
+  .section-light {
+    --background: 0 0% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --muted-foreground: 215 20% 40%;
+    --border: 217 33% 85%;
+  }
 }
 
 /* Scroll animations */

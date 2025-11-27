@@ -48,7 +48,7 @@ const Header = () => {
           </nav>
 
           <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-            Перейти на портал
+            Портал проверенных решений
           </Button>
         </div>
       </div>
