@@ -5,6 +5,7 @@ import Mission from "@/components/Mission";
 import Services from "@/components/Services";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import SectionDivider from "@/components/SectionDivider";
 
 const Index = () => {
   return (
@@ -12,8 +13,11 @@ const Index = () => {
       <Header />
       <Hero />
       <Statistics />
+      <SectionDivider />
       <Mission />
+      <SectionDivider />
       <Services />
+      <SectionDivider />
       <Contact />
       <Footer />
     </div>

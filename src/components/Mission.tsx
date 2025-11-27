@@ -17,13 +17,17 @@ const Mission = () => {
   ];
 
   return (
-    <section id="about" className="py-24 bg-muted/30">
-      <div className="container mx-auto px-4">
+    <section id="about" className="section-light py-24 bg-white relative overflow-hidden">
+      {/* Background pattern */}
+      <div className="absolute inset-0 bg-grid-slate-200/50 bg-[size:50px_50px]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-white via-transparent to-white" />
+      
+      <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center mb-16 scroll-animate">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-slate-900">
             Наша миссия
           </h2>
-          <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
+          <p className="text-lg md:text-xl text-slate-600 leading-relaxed">
             С 2009 года энергосбережение и энергоэффективность — это не просто слова для нас, это наше кредо. 
             Мы стремимся к максимально рациональному использованию энергетических ресурсов и несём эту идею в массы: 
             каждый должен адекватно платить за ресурсы и получать от них максимальную выгоду.
@@ -34,17 +38,17 @@ const Mission = () => {
           {features.map((feature, index) => (
             <div 
               key={index}
-              className="p-8 rounded-xl bg-card/40 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 scroll-animate"
+              className="p-8 rounded-xl bg-white border border-slate-200 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 scroll-animate"
             >
               <div className="flex items-start gap-4">
                 <div className="flex-shrink-0">
                   <CheckCircle2 className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-3 text-foreground">
+                  <h3 className="text-xl font-semibold mb-3 text-slate-900">
                     {feature.title}
                   </h3>
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="text-slate-600 leading-relaxed">
                     {feature.description}
                   </p>
                 </div>
@@ -61,8 +65,8 @@ const Mission = () => {
             { label: "Цифровой контроль", sublabel: "Верификация результатов через платформу" }
           ].map((item, index) => (
             <div key={index} className="text-center p-6 rounded-lg bg-primary/5 border border-primary/10">
-              <div className="font-semibold text-foreground mb-2">{item.label}</div>
-              <div className="text-sm text-muted-foreground">{item.sublabel}</div>
+              <div className="font-semibold text-slate-900 mb-2">{item.label}</div>
+              <div className="text-sm text-slate-500">{item.sublabel}</div>
             </div>
           ))}
         </div>
