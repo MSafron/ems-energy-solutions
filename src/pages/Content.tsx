@@ -1,5 +1,4 @@
 import PageLayout from "@/components/layout/PageLayout";
-import PricingTable from "@/components/products/PricingTable";
 import UseCaseCard from "@/components/products/UseCaseCard";
 import { 
   Monitor, 
@@ -15,7 +14,10 @@ import {
   TrendingUp,
   CreditCard,
   Wrench,
-  Headphones
+  Headphones,
+  Volume2,
+  Pointer,
+  LayoutGrid
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -43,7 +45,7 @@ const advantages = [
   }
 ];
 
-const pricingTiers = [
+const standardTiers = [
   {
     name: "Эконом",
     specs: "43\" экран",
@@ -80,9 +82,52 @@ const pricingTiers = [
       "Лицензия SmartPlayer",
       "Приоритетная поддержка"
     ]
+  }
+];
+
+const specialTiers = [
+  {
+    name: "Sound",
+    icon: Volume2,
+    specs: "Аудио-система",
+    price: "3 500 ₽",
+    features: [
+      "Фоновое аудио",
+      "Аудиоплеер",
+      "Монтаж и настройка",
+      "Лицензия SmartPlayer",
+      "Управление зонами"
+    ]
+  },
+  {
+    name: "Touch",
+    icon: Pointer,
+    specs: "Интерактивная панель",
+    price: "14 000 ₽",
+    features: [
+      "Сенсорная панель",
+      "Интерактивный медиаплеер",
+      "Монтаж и настройка",
+      "Лицензия SmartPlayer",
+      "Разработка интерфейса"
+    ]
+  },
+  {
+    name: "Video Wall",
+    icon: LayoutGrid,
+    specs: "Видеостена 2x2",
+    price: "28 000 ₽",
+    features: [
+      "4 экрана + контроллер",
+      "Видеостенный контроллер",
+      "Монтаж и настройка",
+      "Лицензия SmartPlayer",
+      "Синхронизация контента"
+    ]
   },
   {
     name: "Управление",
+    icon: Settings,
     specs: "Только софт",
     price: "4 800 ₽",
     features: [
@@ -210,19 +255,111 @@ const Content = () => {
         </div>
       </section>
 
-      {/* Pricing */}
+      {/* Standard Pricing */}
       <section className="py-20 bg-secondary">
         <div className="container mx-auto px-4">
-          <PricingTable 
-            title="Тарифы и комплекты"
-            description="Выберите подходящий вариант — всё включено в ежемесячный платёж"
-            tiers={pricingTiers}
-          />
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Стандартные решения
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Готовые комплекты с экранами — всё включено в ежемесячный платёж
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            {standardTiers.map((tier, index) => (
+              <div 
+                key={index} 
+                className={`bg-card rounded-2xl p-6 border-2 transition-all ${
+                  tier.highlight 
+                    ? "border-primary shadow-lg scale-105" 
+                    : "border-border"
+                }`}
+              >
+                {tier.highlight && (
+                  <div className="bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full w-fit mb-4">
+                    Популярный
+                  </div>
+                )}
+                <div className="flex items-center gap-3 mb-2">
+                  <Monitor className="w-8 h-8 text-primary" />
+                  <div>
+                    <h3 className="text-xl font-bold text-foreground">{tier.name}</h3>
+                    <p className="text-sm text-muted-foreground">{tier.specs}</p>
+                  </div>
+                </div>
+                <div className="my-4">
+                  <span className="text-3xl font-bold text-foreground">{tier.price}</span>
+                  <span className="text-muted-foreground">/мес</span>
+                </div>
+                <ul className="space-y-2">
+                  {tier.features.map((feature, fIndex) => (
+                    <li key={fIndex} className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Special Pricing */}
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Специализированные решения
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Аудио-системы, интерактивные панели, видеостены и управление контентом
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            {specialTiers.map((tier, index) => (
+              <div 
+                key={index} 
+                className="bg-card rounded-2xl p-6 border border-border"
+              >
+                <div className="flex items-center gap-3 mb-2">
+                  <tier.icon className="w-8 h-8 text-accent" />
+                  <div>
+                    <h3 className="text-xl font-bold text-foreground">{tier.name}</h3>
+                    <p className="text-sm text-muted-foreground">{tier.specs}</p>
+                  </div>
+                </div>
+                <div className="my-4">
+                  <span className="text-3xl font-bold text-foreground">{tier.price}</span>
+                  <span className="text-muted-foreground">/мес</span>
+                </div>
+                <ul className="space-y-2">
+                  {tier.features.map((feature, fIndex) => (
+                    <li key={fIndex} className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <CheckCircle className="w-4 h-4 text-accent flex-shrink-0" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          {/* Note */}
+          <div className="bg-muted rounded-xl p-6 text-center max-w-3xl mx-auto">
+            <p className="text-muted-foreground text-sm">
+              <strong className="text-foreground">В стоимость включено:</strong> оборудование, монтаж, лицензия SmartPlayer, техподдержка, управление контентом. 
+              Подготовка дизайна и контента — по необходимости за отдельную плату.
+            </p>
+          </div>
         </div>
       </section>
 
       {/* Use cases */}
-      <section className="py-20 bg-background">
+      <section className="py-20 bg-secondary">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -242,7 +379,7 @@ const Content = () => {
       </section>
 
       {/* Real cases */}
-      <section className="py-20 bg-secondary">
+      <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
