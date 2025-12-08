@@ -1,23 +1,46 @@
-import { Zap, Activity, Monitor } from "lucide-react";
+import { Zap, Activity, Monitor, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 const directions = [
   {
     icon: Zap,
     title: "Энергетические решения",
-    description: "Энергосервисные контракты, светодиодное освещение, автоматизация отопления, газопоршневые энергоцентры, блочно-модульные котельные",
-    tags: ["Энергосервис", "Освещение", "САРТ", "Генерация", "Котельные"]
+    description: "Профессиональная энергосервисная компания, специализирующаяся на проектах энергосбережения и энергоэффективности",
+    features: [
+      "Реализация энергосервисных контрактов",
+      "Строительство энергоцентров",
+      "Поставка энергоресурсов клиентам",
+      "Энергоэффективное оборудование, проверенное нашими инвестициями",
+      "Электротехническое оборудование для монтажных работ"
+    ],
+    link: "/energy"
   },
   {
     icon: Activity,
     title: "Управление энергоданными",
-    description: "Цифровая платформа для мониторинга и управления энергетическими объектами",
-    tags: ["SCADA", "Мониторинг", "BMS", "Диспетчеризация"]
+    description: "Цифровая платформа для комплексного мониторинга и управления энергетическими объектами",
+    features: [
+      "Онлайн веб-SCADA система учёта и диспетчеризации",
+      "Создание цифровых двойников энергообъектов",
+      "Интеграция с ГИС системами (включая Zulu ГИС)",
+      "Масштабируемость от одного устройства до целого региона",
+      "Building Management System (BMS) для крупных объектов"
+    ],
+    link: "/platform"
   },
   {
     icon: Monitor,
     title: "Управление контентом",
     description: "Digital Signage решения для визуализации и управления контентом на цифровых экранах",
-    tags: ["Digital Signage", "CMS", "SaaS"]
+    features: [
+      "Централизованное управление устройствами визуализации",
+      "Контроллеры для управления контентом",
+      "Единая платформа для всех устройств",
+      "SaaS модель с инвестициями в оборудование и монтаж",
+      "Снижение инвестиционной нагрузки для клиента"
+    ],
+    link: "/content"
   }
 ];
 
@@ -38,17 +61,17 @@ const Directions = () => {
           {directions.map((direction, index) => (
             <div 
               key={index} 
-              className="group bg-card rounded-2xl overflow-hidden border border-border card-hover scroll-animate"
+              className="group bg-card rounded-2xl overflow-hidden border border-border card-hover scroll-animate flex flex-col"
             >
               {/* Top accent bar */}
               <div className="h-1.5 bg-gradient-to-r from-primary to-accent" />
               
-              <div className="p-8">
+              <div className="p-8 flex flex-col flex-1">
                 <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
                   <direction.icon className="w-8 h-8 text-primary" />
                 </div>
                 
-                <h3 className="text-xl font-semibold text-foreground mb-4">
+                <h3 className="text-xl font-semibold text-foreground mb-3">
                   {direction.title}
                 </h3>
                 
@@ -56,16 +79,24 @@ const Directions = () => {
                   {direction.description}
                 </p>
                 
-                <div className="flex flex-wrap gap-2">
-                  {direction.tags.map((tag, tagIndex) => (
-                    <span 
-                      key={tagIndex}
-                      className="px-3 py-1 bg-muted text-muted-foreground text-xs font-medium rounded-full"
+                <ul className="space-y-2 mb-6 flex-1">
+                  {direction.features.map((feature, featureIndex) => (
+                    <li 
+                      key={featureIndex}
+                      className="flex items-start gap-2 text-sm text-muted-foreground"
                     >
-                      {tag}
-                    </span>
+                      <span className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0" />
+                      {feature}
+                    </li>
                   ))}
-                </div>
+                </ul>
+                
+                <Link to={direction.link}>
+                  <Button variant="outline" className="w-full group/btn">
+                    Подробнее
+                    <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
               </div>
             </div>
           ))}
