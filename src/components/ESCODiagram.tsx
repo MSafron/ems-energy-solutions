@@ -1,47 +1,57 @@
-import { useState } from "react";
-import { TrendingDown, Wallet, ArrowRight, CheckCircle, Building2, Wrench } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowRight, CheckCircle, Building2, Wallet } from "lucide-react";
 
 const ESCODiagram = () => {
-  const [activePhase, setActivePhase] = useState<number | null>(null);
+  const [activePhase, setActivePhase] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
   const phases = [
     {
-      id: 1,
+      id: 0,
       title: "До контракта",
       subtitle: "Текущее состояние",
-      color: "bg-destructive/20 border-destructive/40",
-      textColor: "text-destructive",
       bars: [
-        { label: "Затраты на энергию", height: "h-48", color: "bg-destructive/70" },
+        { label: "Затраты на энергию", percent: 100, color: "bg-destructive/70" },
       ],
-      description: "Высокие затраты на электроэнергию, устаревшее оборудование, неэффективное потребление"
+      description: "Высокие затраты на электроэнергию, устаревшее оборудование"
+    },
+    {
+      id: 1,
+      title: "Во время контракта",
+      subtitle: "3-10 лет",
+      bars: [
+        { label: "Потребление", percent: 20, color: "bg-muted-foreground/50" },
+        { label: "Ваша экономия", percent: 10, color: "bg-accent" },
+        { label: "Погашение инвестиций", percent: 70, color: "bg-primary" },
+      ],
+      description: "Экономия делится: часть вам, часть на погашение инвестиций"
     },
     {
       id: 2,
-      title: "Во время контракта",
-      subtitle: "3-10 лет",
-      color: "bg-primary/20 border-primary/40",
-      textColor: "text-primary",
-      bars: [
-        { label: "Экономия", height: "h-24", color: "bg-accent" },
-        { label: "Оплата инвестору", height: "h-16", color: "bg-primary" },
-        { label: "Базовые затраты", height: "h-20", color: "bg-muted" },
-      ],
-      description: "Достигнутая экономия делится между клиентом и инвестором. Оплата — только из реальной экономии!"
-    },
-    {
-      id: 3,
       title: "После контракта",
       subtitle: "Навсегда",
-      color: "bg-accent/20 border-accent/40",
-      textColor: "text-accent",
       bars: [
-        { label: "Вся экономия — ваша", height: "h-28", color: "bg-accent" },
-        { label: "Базовые затраты", height: "h-20", color: "bg-muted" },
+        { label: "Потребление", percent: 20, color: "bg-muted-foreground/50" },
+        { label: "Вся экономия — ваша", percent: 80, color: "bg-accent" },
       ],
-      description: "Оборудование переходит вам, вся достигнутая экономия остаётся у вас навсегда"
+      description: "Оборудование ваше, вся экономия остаётся у вас навсегда"
     }
   ];
+
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+    
+    const interval = setInterval(() => {
+      setActivePhase((prev) => (prev + 1) % phases.length);
+    }, 4000);
+    
+    return () => clearInterval(interval);
+  }, [isAutoPlaying, phases.length]);
+
+  const handlePhaseClick = (index: number) => {
+    setActivePhase(index);
+    setIsAutoPlaying(false);
+  };
 
   const investorBenefits = [
     "Инвестиции в оборудование",
@@ -55,7 +65,7 @@ const ESCODiagram = () => {
     "Нулевые капитальные затраты",
     "Доступ к объекту",
     "Согласование решений",
-    "Оплата из экономии"
+    "Часть экономии с первого дня"
   ];
 
   return (
@@ -66,72 +76,95 @@ const ESCODiagram = () => {
             Как работает энергосервисный контракт
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Мы инвестируем — вы экономите. Оплата только из достигнутой экономии.
+            Мы инвестируем — вы экономите. Простая и прозрачная модель.
           </p>
         </div>
 
-        {/* Interactive Diagram */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+        {/* Phase selector */}
+        <div className="flex justify-center gap-2 mb-8">
           {phases.map((phase, index) => (
-            <div
+            <button
               key={phase.id}
-              className={`relative bg-background rounded-2xl p-6 border-2 transition-all duration-300 cursor-pointer scroll-animate ${
-                activePhase === phase.id 
-                  ? phase.color + " scale-105 shadow-lg" 
-                  : "border-border hover:border-primary/30"
+              onClick={() => handlePhaseClick(index)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                activePhase === index
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-muted text-muted-foreground hover:bg-muted/80"
               }`}
-              onMouseEnter={() => setActivePhase(phase.id)}
-              onMouseLeave={() => setActivePhase(null)}
             >
-              {/* Phase number */}
-              <div className={`absolute -top-3 -left-3 w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${
-                activePhase === phase.id ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
-              }`}>
-                {phase.id}
-              </div>
-
-              {/* Arrow between phases */}
-              {index < phases.length - 1 && (
-                <div className="hidden lg:block absolute top-1/2 -right-4 z-10 transform -translate-y-1/2">
-                  <ArrowRight className="w-8 h-8 text-primary/40" />
-                </div>
-              )}
-
-              <div className="pt-4">
-                <h3 className={`text-xl font-bold mb-1 ${activePhase === phase.id ? phase.textColor : "text-foreground"}`}>
-                  {phase.title}
-                </h3>
-                <p className="text-sm text-muted-foreground mb-6">{phase.subtitle}</p>
-
-                {/* Bar Chart */}
-                <div className="flex items-end justify-center gap-3 h-52 mb-4">
-                  {phase.bars.map((bar, barIndex) => (
-                    <div key={barIndex} className="flex flex-col items-center">
-                      <div 
-                        className={`w-16 ${bar.height} ${bar.color} rounded-t-lg transition-all duration-500 flex items-end justify-center pb-2`}
-                      >
-                        <span className="text-[10px] text-center text-foreground font-medium px-1 leading-tight">
-                          {bar.label}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Description */}
-                <p className={`text-sm leading-relaxed transition-opacity duration-300 ${
-                  activePhase === phase.id ? "opacity-100" : "opacity-70"
-                } text-muted-foreground`}>
-                  {phase.description}
-                </p>
-              </div>
-            </div>
+              {phase.title}
+            </button>
           ))}
+        </div>
+
+        {/* Animated Bar Chart */}
+        <div className="bg-background rounded-2xl p-8 border border-border mb-12 scroll-animate">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-xl font-bold text-foreground">{phases[activePhase].title}</h3>
+              <p className="text-sm text-muted-foreground">{phases[activePhase].subtitle}</p>
+            </div>
+            <div className="flex items-center gap-2">
+              {phases.map((_, index) => (
+                <div
+                  key={index}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    activePhase === index ? "bg-primary w-6" : "bg-muted-foreground/30"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Bars container */}
+          <div className="flex items-end justify-center gap-4 h-64 mb-6">
+            {phases[activePhase].bars.map((bar, barIndex) => (
+              <div key={barIndex} className="flex flex-col items-center flex-1 max-w-32">
+                <div 
+                  className={`w-full ${bar.color} rounded-t-lg transition-all duration-700 ease-out flex items-end justify-center pb-3`}
+                  style={{ height: `${bar.percent * 2.4}px` }}
+                >
+                  <span className="text-xs text-center font-medium px-2 leading-tight text-foreground">
+                    {bar.percent}%
+                  </span>
+                </div>
+                <span className="text-xs text-center text-muted-foreground mt-2 leading-tight">
+                  {bar.label}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-center text-muted-foreground">
+            {phases[activePhase].description}
+          </p>
+
+          {/* Timeline arrows */}
+          <div className="flex justify-center items-center gap-4 mt-8">
+            {phases.map((phase, index) => (
+              <div key={phase.id} className="flex items-center">
+                <div 
+                  className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 cursor-pointer ${
+                    activePhase === index 
+                      ? "bg-primary text-primary-foreground scale-110" 
+                      : "bg-muted text-muted-foreground hover:bg-muted/80"
+                  }`}
+                  onClick={() => handlePhaseClick(index)}
+                >
+                  {index + 1}
+                </div>
+                {index < phases.length - 1 && (
+                  <ArrowRight className={`w-6 h-6 mx-2 transition-colors duration-300 ${
+                    activePhase > index ? "text-primary" : "text-muted-foreground/40"
+                  }`} />
+                )}
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Benefits blocks */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {/* Investor responsibilities */}
           <div className="bg-primary/10 rounded-2xl p-6 border border-primary/20 scroll-animate">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center">
@@ -152,7 +185,6 @@ const ESCODiagram = () => {
             </ul>
           </div>
 
-          {/* Client responsibilities */}
           <div className="bg-accent/10 rounded-2xl p-6 border border-accent/20 scroll-animate">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center">

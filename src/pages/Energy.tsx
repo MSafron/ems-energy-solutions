@@ -22,7 +22,7 @@ import { Link } from "react-router-dom";
 const products = [
   {
     icon: Lightbulb,
-    title: "LED-освещение",
+    title: "Светодиодное освещение",
     description: "Замена уличного, наружного и внутрицехового освещения на современные светодиодные системы с гарантированной экономией.",
     savings: "50-92%",
     benefits: [
