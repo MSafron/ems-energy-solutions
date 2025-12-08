@@ -3,10 +3,10 @@ import { ExternalLink } from "lucide-react";
 
 const Portal = () => {
   return (
-    <section className="py-24 bg-muted/50">
+    <section className="py-24 bg-secondary">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center scroll-animate">
-          <div className="bg-card rounded-2xl p-10 md:p-14 border border-border shadow-sm">
+          <div className="bg-background rounded-2xl p-10 md:p-14 border border-border shadow-sm">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               Портал проверенных энергоэффективных решений
             </h2>

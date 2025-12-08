@@ -29,7 +29,7 @@ const steps = [
 
 const InvestmentModel = () => {
   return (
-    <section id="advantages" className="py-24 bg-muted/50">
+    <section id="advantages" className="py-24 bg-secondary">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 scroll-animate">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -44,7 +44,7 @@ const InvestmentModel = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {steps.map((step, index) => (
             <div key={index} className="relative scroll-animate">
-              <div className="bg-card rounded-xl p-6 border border-border h-full">
+              <div className="bg-background rounded-xl p-6 border border-border h-full shadow-sm">
                 <div className="text-5xl font-bold text-primary/20 mb-4">
                   {step.number}
                 </div>
