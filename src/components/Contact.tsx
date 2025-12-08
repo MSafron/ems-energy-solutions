@@ -1,76 +1,103 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, MessageSquare } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
 
 const Contact = () => {
   return (
-    <section id="contact" className="section-light py-24 bg-white relative overflow-hidden">
-      {/* Background pattern */}
-      <div className="absolute inset-0 bg-grid-slate-200/50 bg-[size:50px_50px]" />
-      <div className="absolute inset-0 bg-gradient-to-b from-white via-transparent to-white" />
-      
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-2xl mx-auto scroll-animate">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900">
-              Контакты
-            </h2>
-            <p className="text-lg text-slate-600">
-              Свяжитесь с нами для обсуждения вашего проекта
-            </p>
-          </div>
-
-          <form className="space-y-6 bg-white p-8 md:p-10 rounded-2xl border border-slate-200 shadow-lg">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-900">Имя</label>
-              <Input 
-                placeholder="Введите ваше имя" 
-                className="bg-slate-50 border-slate-200 focus:border-primary"
-              />
+    <section id="contact" className="py-24 bg-background">
+      <div className="container mx-auto px-4">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Left column - Info */}
+            <div className="scroll-animate">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
+                Обсудим ваш проект?
+              </h2>
+              <p className="text-muted-foreground text-lg mb-10 leading-relaxed">
+                Расскажите о вашей задаче — мы подготовим предварительный расчёт
+              </p>
+              
+              <div className="space-y-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <Mail className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Email</p>
+                    <a href="mailto:info@emc3.ru" className="text-foreground font-medium hover:text-primary transition-colors">
+                      info@emc3.ru
+                    </a>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <Phone className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Телефон</p>
+                    <a href="tel:+74951234567" className="text-foreground font-medium hover:text-primary transition-colors">
+                      +7 (495) 123-45-67
+                    </a>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <MapPin className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Адрес</p>
+                    <p className="text-foreground font-medium">Москва</p>
+                  </div>
+                </div>
+              </div>
             </div>
+            
+            {/* Right column - Form */}
+            <div className="scroll-animate">
+              <form className="bg-card rounded-2xl p-8 border border-border shadow-sm space-y-5">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground">Имя</label>
+                  <Input 
+                    placeholder="Введите ваше имя" 
+                    className="bg-background"
+                  />
+                </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-900">Email</label>
-              <Input 
-                type="email" 
-                placeholder="example@company.com" 
-                className="bg-slate-50 border-slate-200 focus:border-primary"
-              />
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground">Телефон</label>
+                  <Input 
+                    type="tel" 
+                    placeholder="+7 (___) ___-__-__" 
+                    className="bg-background"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground">Email</label>
+                  <Input 
+                    type="email" 
+                    placeholder="example@company.com" 
+                    className="bg-background"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground">Опишите вашу задачу</label>
+                  <Textarea 
+                    placeholder="Расскажите о вашем проекте..."
+                    rows={4}
+                    className="bg-background resize-none"
+                  />
+                </div>
+
+                <Button type="submit" size="lg" className="w-full">
+                  Отправить заявку
+                </Button>
+              </form>
             </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-900">Телефон</label>
-              <Input 
-                type="tel" 
-                placeholder="+7 (___) ___-__-__" 
-                className="bg-slate-50 border-slate-200 focus:border-primary"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-900">Сообщение</label>
-              <Textarea 
-                placeholder="Расскажите о вашем проекте..."
-                rows={5}
-                className="bg-slate-50 border-slate-200 focus:border-primary resize-none"
-              />
-            </div>
-
-            <Button type="submit" size="lg" className="w-full gap-2">
-              <Mail className="w-4 h-4" />
-              Отправить сообщение
-            </Button>
-          </form>
-
-          <div className="mt-12 text-center">
-            <a 
-              href="#" 
-              className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium"
-            >
-              <MessageSquare className="w-5 h-5" />
-              Наш канал в Telegram
-            </a>
           </div>
         </div>
       </div>
