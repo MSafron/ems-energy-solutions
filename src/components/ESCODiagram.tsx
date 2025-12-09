@@ -344,10 +344,13 @@ const ESCODiagram = () => {
       { percent: 80, color: "bg-accent", label: "Экономия" },
       { percent: 20, color: "bg-muted-foreground/50", label: "Потребление" },
     ],
-    // Столбец выгоды с 3 сегментами
+    // Столбец выгоды = высота как "Год 4" (139%)
+    // Базовая часть (100%) = 20% потребление + 80% экономия заказчика
+    // Дополнительная часть (+39%) = экономия от роста тарифа (139 - 100)
+    benefitTotalHeight: 139,
     benefitSegments: [
-      { percent: 24, color: "bg-green-600", label: "От роста тарифа" },
-      { percent: 80, color: "bg-accent", label: "Достигаемая экономия" },
+      { percent: 39, color: "bg-green-600", label: "От роста тарифа" },
+      { percent: 80, color: "bg-accent", label: "Экономия заказчика" },
       { percent: 20, color: "bg-muted-foreground/50", label: "Потребление" },
     ]
   };
@@ -554,9 +557,12 @@ const ESCODiagram = () => {
   const renderAfterPhase = () => {
     const [hovered, setHovered] = useState<string | null>(null);
     const maxHeight = 140;
+    const scale = maxHeight / 139;
     const totalPercent = afterData.benefitSegments.reduce((s, seg) => s + seg.percent, 0);
-    const benefitPx = (totalPercent / 139) * maxHeight;
-    const energyPx = maxHeight;
+    // Столбец "Выгода" = высота как "Год 4" (139%)
+    const benefitPx = afterData.benefitTotalHeight * scale;
+    // Столбец "Энергия" = базовый уровень (100%)
+    const energyPx = 100 * scale;
     
     return (
       <Card>
@@ -573,11 +579,11 @@ const ESCODiagram = () => {
             </div>
             <div className="flex items-center gap-1.5">
               <div className="w-2.5 h-2.5 md:w-3 md:h-3 bg-accent rounded" />
-              <span className="text-muted-foreground">Достигаемая экономия</span>
+              <span className="text-muted-foreground">Экономия заказчика (80%)</span>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="w-2.5 h-2.5 md:w-3 md:h-3 bg-green-600 rounded" />
-              <span className="text-muted-foreground">От роста тарифа</span>
+              <span className="text-muted-foreground">Доп. экономия от тарифа (+39%)</span>
             </div>
           </div>
           
@@ -682,8 +688,9 @@ const ESCODiagram = () => {
               <TooltipContent className="bg-popover border shadow-lg">
                 <div className="text-xs space-y-1">
                   <p>Потребление: <span className="font-medium">20%</span></p>
-                  <p>Достигаемая экономия: <span className="font-medium text-accent">80%</span></p>
-                  <p>Экономия от роста тарифа: <span className="font-medium text-green-600">+24%</span></p>
+                  <p>Экономия заказчика: <span className="font-medium text-accent">80%</span></p>
+                  <p>Доп. экономия от роста тарифа: <span className="font-medium text-green-600">+39%</span></p>
+                  <p className="pt-1 border-t border-border mt-1">Итого выгода: <span className="font-bold">139%</span> (как Год 4)</p>
                 </div>
               </TooltipContent>
             </Tooltip>
