@@ -1,13 +1,11 @@
-import { useState, useEffect } from "react";
-import { ArrowRight, CheckCircle, Building2, Wallet } from "lucide-react";
+import { CheckCircle, Building2, Wallet } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const ESCODiagram = () => {
-  const [activePhase, setActivePhase] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-
   const phases = [
     {
-      id: 0,
+      id: "before",
       title: "До контракта",
       subtitle: "Текущее состояние",
       bars: [
@@ -16,7 +14,7 @@ const ESCODiagram = () => {
       description: "Высокие затраты на электроэнергию, устаревшее оборудование"
     },
     {
-      id: 1,
+      id: "during",
       title: "Во время контракта",
       subtitle: "3-10 лет",
       bars: [
@@ -27,7 +25,7 @@ const ESCODiagram = () => {
       description: "Экономия делится: часть вам, часть на погашение инвестиций"
     },
     {
-      id: 2,
+      id: "after",
       title: "После контракта",
       subtitle: "Навсегда",
       bars: [
@@ -37,21 +35,6 @@ const ESCODiagram = () => {
       description: "Оборудование ваше, вся экономия остаётся у вас навсегда"
     }
   ];
-
-  useEffect(() => {
-    if (!isAutoPlaying) return;
-    
-    const interval = setInterval(() => {
-      setActivePhase((prev) => (prev + 1) % phases.length);
-    }, 4000);
-    
-    return () => clearInterval(interval);
-  }, [isAutoPlaying, phases.length]);
-
-  const handlePhaseClick = (index: number) => {
-    setActivePhase(index);
-    setIsAutoPlaying(false);
-  };
 
   const investorBenefits = [
     "Инвестиции в оборудование",
@@ -80,88 +63,49 @@ const ESCODiagram = () => {
           </p>
         </div>
 
-        {/* Phase selector */}
-        <div className="flex justify-center gap-2 mb-8">
-          {phases.map((phase, index) => (
-            <button
-              key={phase.id}
-              onClick={() => handlePhaseClick(index)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                activePhase === index
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-muted text-muted-foreground hover:bg-muted/80"
-              }`}
-            >
-              {phase.title}
-            </button>
+        {/* Shadcn Tabs */}
+        <Tabs defaultValue="before" className="w-full mb-12">
+          <TabsList className="grid w-full grid-cols-3 mb-8">
+            <TabsTrigger value="before">До контракта</TabsTrigger>
+            <TabsTrigger value="during">Во время контракта</TabsTrigger>
+            <TabsTrigger value="after">После контракта</TabsTrigger>
+          </TabsList>
+          
+          {phases.map((phase) => (
+            <TabsContent key={phase.id} value={phase.id}>
+              <Card>
+                <CardHeader>
+                  <CardTitle>{phase.title}</CardTitle>
+                  <CardDescription>{phase.subtitle}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {/* Bars container */}
+                  <div className="flex items-end justify-center gap-4 h-64 mb-6">
+                    {phase.bars.map((bar, barIndex) => (
+                      <div key={barIndex} className="flex flex-col items-center flex-1 max-w-32">
+                        <div 
+                          className={`w-full ${bar.color} rounded-t-lg transition-all duration-700 ease-out flex items-end justify-center pb-3`}
+                          style={{ height: `${bar.percent * 2.4}px` }}
+                        >
+                          <span className="text-xs text-center font-medium px-2 leading-tight text-foreground">
+                            {bar.percent}%
+                          </span>
+                        </div>
+                        <span className="text-xs text-center text-muted-foreground mt-2 leading-tight">
+                          {bar.label}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <p className="text-center text-muted-foreground">
+                    {phase.description}
+                  </p>
+                </CardContent>
+              </Card>
+            </TabsContent>
           ))}
-        </div>
-
-        {/* Animated Bar Chart */}
-        <div className="bg-background rounded-2xl p-8 border border-border mb-12 scroll-animate">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h3 className="text-xl font-bold text-foreground">{phases[activePhase].title}</h3>
-              <p className="text-sm text-muted-foreground">{phases[activePhase].subtitle}</p>
-            </div>
-            <div className="flex items-center gap-2">
-              {phases.map((_, index) => (
-                <div
-                  key={index}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    activePhase === index ? "bg-primary w-6" : "bg-muted-foreground/30"
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Bars container */}
-          <div className="flex items-end justify-center gap-4 h-64 mb-6">
-            {phases[activePhase].bars.map((bar, barIndex) => (
-              <div key={barIndex} className="flex flex-col items-center flex-1 max-w-32">
-                <div 
-                  className={`w-full ${bar.color} rounded-t-lg transition-all duration-700 ease-out flex items-end justify-center pb-3`}
-                  style={{ height: `${bar.percent * 2.4}px` }}
-                >
-                  <span className="text-xs text-center font-medium px-2 leading-tight text-foreground">
-                    {bar.percent}%
-                  </span>
-                </div>
-                <span className="text-xs text-center text-muted-foreground mt-2 leading-tight">
-                  {bar.label}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          <p className="text-center text-muted-foreground">
-            {phases[activePhase].description}
-          </p>
-
-          {/* Timeline arrows */}
-          <div className="flex justify-center items-center gap-4 mt-8">
-            {phases.map((phase, index) => (
-              <div key={phase.id} className="flex items-center">
-                <div 
-                  className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 cursor-pointer ${
-                    activePhase === index 
-                      ? "bg-primary text-primary-foreground scale-110" 
-                      : "bg-muted text-muted-foreground hover:bg-muted/80"
-                  }`}
-                  onClick={() => handlePhaseClick(index)}
-                >
-                  {index + 1}
-                </div>
-                {index < phases.length - 1 && (
-                  <ArrowRight className={`w-6 h-6 mx-2 transition-colors duration-300 ${
-                    activePhase > index ? "text-primary" : "text-muted-foreground/40"
-                  }`} />
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
+        </Tabs>
 
         {/* Benefits blocks */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
