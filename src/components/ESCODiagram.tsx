@@ -5,45 +5,281 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import { cn } from "@/lib/utils";
 
+// Компонент для 3D-столбца с двумя слоями
+interface Bar3DProps {
+  naturalHeight: number;
+  moneyHeight: number;
+  naturalColor: string;
+  moneyColor: string;
+  label: string;
+  naturalLabel?: string;
+  moneyLabel?: string;
+  growthLabel?: string;
+  visible: boolean;
+  delay: number;
+  maxHeight?: number;
+}
+
+const Bar3D = ({ 
+  naturalHeight, 
+  moneyHeight, 
+  naturalColor, 
+  moneyColor, 
+  label, 
+  naturalLabel,
+  moneyLabel,
+  growthLabel,
+  visible, 
+  delay,
+  maxHeight = 180
+}: Bar3DProps) => {
+  const [hovered, setHovered] = useState(false);
+  
+  const naturalPx = (naturalHeight / 100) * maxHeight;
+  const moneyPx = (moneyHeight / 100) * maxHeight;
+  
+  return (
+    <div 
+      className="flex flex-col items-center flex-1 max-w-20 md:max-w-28 group cursor-pointer"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <div className="relative w-full h-48 md:h-56 flex items-end justify-center">
+        {/* Задний столбец (деньги) — смещён */}
+        <div 
+          className={cn(
+            "absolute rounded-t-lg border transition-all duration-1000 ease-out",
+            moneyColor,
+            hovered ? "brightness-125 scale-[1.02]" : ""
+          )}
+          style={{ 
+            height: visible ? `${moneyPx}px` : '0px',
+            width: 'calc(100% - 8px)',
+            left: '8px',
+            bottom: '4px',
+            transitionDelay: `${delay + 200}ms`
+          }}
+        >
+          {/* Процент роста на заднем столбце */}
+          {growthLabel && (
+            <span 
+              className={cn(
+                "absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] md:text-xs font-bold text-destructive transition-opacity duration-300 whitespace-nowrap",
+                visible ? "opacity-100" : "opacity-0"
+              )}
+              style={{ transitionDelay: `${delay + 800}ms` }}
+            >
+              {growthLabel}
+            </span>
+          )}
+          {/* Значение денег */}
+          {moneyLabel && (
+            <span 
+              className={cn(
+                "absolute top-2 left-1/2 -translate-x-1/2 text-[8px] md:text-[10px] text-destructive-foreground/80 transition-opacity duration-300 whitespace-nowrap",
+                visible ? "opacity-100" : "opacity-0"
+              )}
+              style={{ transitionDelay: `${delay + 600}ms` }}
+            >
+              {moneyLabel}
+            </span>
+          )}
+        </div>
+        
+        {/* Передний столбец (натуральные единицы) */}
+        <div 
+          className={cn(
+            "relative w-full rounded-t-lg transition-all duration-1000 ease-out z-10 flex items-end justify-center pb-2",
+            naturalColor,
+            hovered ? "brightness-110 scale-[1.03] shadow-lg" : ""
+          )}
+          style={{ 
+            height: visible ? `${naturalPx}px` : '0px',
+            transitionDelay: `${delay}ms`
+          }}
+        >
+          {naturalLabel && (
+            <span 
+              className={cn(
+                "text-[10px] md:text-xs text-center font-medium px-1 text-foreground transition-opacity duration-300",
+                visible ? "opacity-100" : "opacity-0"
+              )}
+              style={{ transitionDelay: `${delay + 600}ms` }}
+            >
+              {naturalLabel}
+            </span>
+          )}
+        </div>
+      </div>
+      
+      <span className="text-[10px] md:text-xs text-center text-muted-foreground mt-2 leading-tight">
+        {label}
+      </span>
+    </div>
+  );
+};
+
+// Компонент для стэкового столбца (во время контракта)
+interface StackedBar3DProps {
+  segments: Array<{
+    percent: number;
+    color: string;
+    label: string;
+  }>;
+  moneyHeight: number;
+  moneyColor: string;
+  label: string;
+  growthLabel?: string;
+  visible: boolean;
+  delay: number;
+  maxHeight?: number;
+}
+
+const StackedBar3D = ({
+  segments,
+  moneyHeight,
+  moneyColor,
+  label,
+  growthLabel,
+  visible,
+  delay,
+  maxHeight = 180
+}: StackedBar3DProps) => {
+  const [hovered, setHovered] = useState(false);
+  
+  const totalPercent = segments.reduce((sum, s) => sum + s.percent, 0);
+  const totalPx = (totalPercent / 100) * maxHeight;
+  const moneyPx = (moneyHeight / 100) * maxHeight;
+  
+  return (
+    <div 
+      className="flex flex-col items-center flex-1 max-w-20 md:max-w-28 group cursor-pointer"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <div className="relative w-full h-48 md:h-56 flex items-end justify-center">
+        {/* Задний столбец (деньги без контракта) */}
+        <div 
+          className={cn(
+            "absolute rounded-t-lg border transition-all duration-1000 ease-out",
+            moneyColor,
+            hovered ? "brightness-125" : ""
+          )}
+          style={{ 
+            height: visible ? `${moneyPx}px` : '0px',
+            width: 'calc(100% - 8px)',
+            left: '8px',
+            bottom: '4px',
+            transitionDelay: `${delay + 200}ms`
+          }}
+        >
+          {growthLabel && (
+            <span 
+              className={cn(
+                "absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] md:text-xs font-bold text-destructive transition-opacity duration-300 whitespace-nowrap",
+                visible ? "opacity-100" : "opacity-0"
+              )}
+              style={{ transitionDelay: `${delay + 800}ms` }}
+            >
+              {growthLabel}
+            </span>
+          )}
+        </div>
+        
+        {/* Передний стэк (натуральные единицы) */}
+        <div 
+          className={cn(
+            "relative w-full flex flex-col-reverse rounded-t-lg overflow-hidden transition-all duration-1000 ease-out z-10",
+            hovered ? "scale-[1.03] shadow-lg" : ""
+          )}
+          style={{ 
+            height: visible ? `${totalPx}px` : '0px',
+            transitionDelay: `${delay}ms`
+          }}
+        >
+          {segments.map((segment, idx) => {
+            const segmentPx = (segment.percent / totalPercent) * 100;
+            return (
+              <div 
+                key={idx}
+                className={cn(
+                  "w-full flex items-center justify-center transition-all duration-200",
+                  segment.color,
+                  hovered ? "brightness-110" : ""
+                )}
+                style={{ height: `${segmentPx}%` }}
+              >
+                <span 
+                  className={cn(
+                    "text-[8px] md:text-[10px] font-medium text-foreground transition-opacity duration-300 text-center px-0.5 leading-tight",
+                    visible ? "opacity-100" : "opacity-0"
+                  )}
+                  style={{ transitionDelay: `${delay + 600 + idx * 100}ms` }}
+                >
+                  {segment.percent}%
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      
+      <span className="text-[10px] md:text-xs text-center text-muted-foreground mt-2 leading-tight">
+        {label}
+      </span>
+    </div>
+  );
+};
+
 const ESCODiagram = () => {
   const [activeTab, setActiveTab] = useState("before");
   const [barsVisible, setBarsVisible] = useState(false);
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
   const diagramRef = useRef<HTMLDivElement>(null);
-  
-  const phases = [
-    {
-      id: "before",
-      title: "До контракта",
-      subtitle: "Текущее состояние",
-      bars: [
-        { label: "Затраты на энергию", percent: 100, color: "bg-destructive/70" },
-      ],
-      description: "Высокие затраты на электроэнергию, устаревшее оборудование"
-    },
-    {
-      id: "during",
-      title: "Во время контракта",
-      subtitle: "3-10 лет",
-      bars: [
-        { label: "Потребление", percent: 20, color: "bg-muted-foreground/50" },
-        { label: "Ваша экономия", percent: 10, color: "bg-accent" },
-        { label: "Погашение инвестиций", percent: 70, color: "bg-primary" },
-      ],
-      description: "Экономия делится: часть вам, часть на погашение инвестиций"
-    },
-    {
-      id: "after",
-      title: "После контракта",
-      subtitle: "Навсегда",
-      bars: [
-        { label: "Потребление", percent: 20, color: "bg-muted-foreground/50" },
-        { label: "Вся экономия — ваша", percent: 80, color: "bg-accent" },
-      ],
-      description: "Оборудование ваше, вся экономия остаётся у вас навсегда"
-    }
-  ];
+
+  // Данные для вкладки "До контракта"
+  const beforeData = {
+    title: "До контракта",
+    subtitle: "Рост затрат при бездействии",
+    description: "Потребление стабильно, но платежи растут из-за индексации тарифов",
+    years: [
+      { label: "Сейчас", natural: 100, money: 100 },
+      { label: "Год 1", natural: 100, money: 104, growth: "+4%" },
+      { label: "Год 2", natural: 100, money: 111, growth: "+7%" },
+      { label: "Год 3", natural: 100, money: 124, growth: "+12%" },
+    ]
+  };
+
+  // Данные для вкладки "Во время контракта"
+  const duringData = {
+    title: "Во время контракта",
+    subtitle: "3-10 лет",
+    description: "Экономия делится: часть вам, часть на погашение инвестиций",
+    segments: [
+      { percent: 70, color: "bg-primary", label: "Погашение" },
+      { percent: 10, color: "bg-accent", label: "Экономия" },
+      { percent: 20, color: "bg-muted-foreground/50", label: "Потребление" },
+    ],
+    years: [
+      { label: "Год 1", money: 104, growth: "+4%" },
+      { label: "Год 2", money: 111, growth: "+7%" },
+      { label: "Год 3", money: 124, growth: "+12%" },
+      { label: "Год 4", money: 139, growth: "+15%" },
+    ]
+  };
+
+  // Данные для вкладки "После контракта"
+  const afterData = {
+    title: "После контракта",
+    subtitle: "Навсегда",
+    description: "Оборудование ваше, вся экономия остаётся у вас навсегда",
+    energySegments: [
+      { percent: 80, color: "bg-accent", label: "Экономия" },
+      { percent: 20, color: "bg-muted-foreground/50", label: "Потребление" },
+    ],
+    moneyBar: { value: 160, label: "Выгода в ₽", displayValue: "~3.5 млн/год" }
+  };
 
   const investorBenefits = [
     "Инвестиции в оборудование",
@@ -61,8 +297,12 @@ const ESCODiagram = () => {
   ];
 
   const phaseOrder = ["before", "during", "after"];
+  const phases = [
+    { id: "before", title: "До контракта" },
+    { id: "during", title: "Во время контракта" },
+    { id: "after", title: "После контракта" }
+  ];
 
-  // Intersection Observer для запуска анимации баров
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -80,7 +320,6 @@ const ESCODiagram = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Перезапуск анимации при смене таба
   const handleTabChange = (value: string) => {
     setBarsVisible(false);
     setActiveTab(value);
@@ -128,6 +367,217 @@ const ESCODiagram = () => {
     }
   };
 
+  // Рендер вкладки "До контракта"
+  const renderBeforePhase = () => (
+    <Card>
+      <CardHeader className="pb-4 md:pb-6">
+        <CardTitle className="text-lg md:text-xl">{beforeData.title}</CardTitle>
+        <CardDescription>{beforeData.subtitle}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        {/* Легенда */}
+        <div className="flex justify-center gap-6 mb-4 text-xs">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-muted-foreground/60 rounded" />
+            <span className="text-muted-foreground">Натуральные ед. (кВт·ч)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-destructive/30 border border-destructive/50 rounded" />
+            <span className="text-muted-foreground">Деньги (₽)</span>
+          </div>
+        </div>
+        
+        <div className="flex items-end justify-center gap-3 md:gap-6 mb-6">
+          {beforeData.years.map((year, idx) => (
+            <Bar3D
+              key={idx}
+              naturalHeight={year.natural}
+              moneyHeight={year.money}
+              naturalColor="bg-muted-foreground/60"
+              moneyColor="bg-destructive/30 border-destructive/50"
+              label={year.label}
+              naturalLabel={idx === 0 ? "100%" : ""}
+              growthLabel={year.growth}
+              visible={barsVisible}
+              delay={idx * 150}
+            />
+          ))}
+        </div>
+        
+        <div className="text-center mb-2">
+          <span className="text-xs text-destructive font-medium">
+            ← Индексация тарифа →
+          </span>
+        </div>
+
+        <p className="text-center text-sm md:text-base text-muted-foreground">
+          {beforeData.description}
+        </p>
+      </CardContent>
+    </Card>
+  );
+
+  // Рендер вкладки "Во время контракта"
+  const renderDuringPhase = () => (
+    <Card>
+      <CardHeader className="pb-4 md:pb-6">
+        <CardTitle className="text-lg md:text-xl">{duringData.title}</CardTitle>
+        <CardDescription>{duringData.subtitle}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        {/* Легенда */}
+        <div className="flex flex-wrap justify-center gap-4 mb-4 text-xs">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-primary rounded" />
+            <span className="text-muted-foreground">Погашение</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-accent rounded" />
+            <span className="text-muted-foreground">Экономия</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-muted-foreground/50 rounded" />
+            <span className="text-muted-foreground">Потребление</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-destructive/30 border border-destructive/50 rounded" />
+            <span className="text-muted-foreground">Без контракта (₽)</span>
+          </div>
+        </div>
+        
+        <div className="flex items-end justify-center gap-3 md:gap-6 mb-6">
+          {duringData.years.map((year, idx) => (
+            <StackedBar3D
+              key={idx}
+              segments={duringData.segments}
+              moneyHeight={year.money}
+              moneyColor="bg-destructive/30 border-destructive/50"
+              label={year.label}
+              growthLabel={year.growth}
+              visible={barsVisible}
+              delay={idx * 150}
+            />
+          ))}
+        </div>
+
+        <p className="text-center text-sm md:text-base text-muted-foreground">
+          {duringData.description}
+        </p>
+      </CardContent>
+    </Card>
+  );
+
+  // Рендер вкладки "После контракта"
+  const renderAfterPhase = () => {
+    const [hovered, setHovered] = useState<string | null>(null);
+    
+    return (
+      <Card>
+        <CardHeader className="pb-4 md:pb-6">
+          <CardTitle className="text-lg md:text-xl">{afterData.title}</CardTitle>
+          <CardDescription>{afterData.subtitle}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {/* Легенда */}
+          <div className="flex flex-wrap justify-center gap-4 mb-4 text-xs">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-accent rounded" />
+              <span className="text-muted-foreground">Ваша экономия</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-muted-foreground/50 rounded" />
+              <span className="text-muted-foreground">Потребление</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-green-500/80 rounded" />
+              <span className="text-muted-foreground">Денежная выгода</span>
+            </div>
+          </div>
+          
+          <div className="flex items-end justify-center gap-8 md:gap-16 mb-6">
+            {/* Энергетический столбец */}
+            <div 
+              className="flex flex-col items-center cursor-pointer"
+              onMouseEnter={() => setHovered('energy')}
+              onMouseLeave={() => setHovered(null)}
+            >
+              <div className="relative w-20 md:w-28 h-48 md:h-56 flex items-end">
+                <div 
+                  className={cn(
+                    "w-full flex flex-col-reverse rounded-t-lg overflow-hidden transition-all duration-1000 ease-out",
+                    hovered === 'energy' ? "scale-[1.03] shadow-lg brightness-110" : ""
+                  )}
+                  style={{ 
+                    height: barsVisible ? '180px' : '0px',
+                    transitionDelay: '0ms'
+                  }}
+                >
+                  {afterData.energySegments.map((segment, idx) => (
+                    <div 
+                      key={idx}
+                      className={cn("w-full flex items-center justify-center", segment.color)}
+                      style={{ height: `${segment.percent}%` }}
+                    >
+                      <span 
+                        className={cn(
+                          "text-[10px] md:text-xs font-medium text-foreground transition-opacity duration-300",
+                          barsVisible ? "opacity-100" : "opacity-0"
+                        )}
+                        style={{ transitionDelay: `${600 + idx * 100}ms` }}
+                      >
+                        {segment.percent}%
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <span className="text-xs text-muted-foreground mt-2 text-center">
+                Энергия
+              </span>
+            </div>
+            
+            {/* Денежный столбец (выше) */}
+            <div 
+              className="flex flex-col items-center cursor-pointer"
+              onMouseEnter={() => setHovered('money')}
+              onMouseLeave={() => setHovered(null)}
+            >
+              <div className="relative w-20 md:w-28 h-48 md:h-56 flex items-end">
+                <div 
+                  className={cn(
+                    "w-full bg-green-500/80 rounded-t-lg transition-all duration-1000 ease-out flex flex-col items-center justify-center",
+                    hovered === 'money' ? "scale-[1.03] shadow-lg brightness-110" : ""
+                  )}
+                  style={{ 
+                    height: barsVisible ? `${(afterData.moneyBar.value / 100) * 180}px` : '0px',
+                    transitionDelay: '150ms'
+                  }}
+                >
+                  <span 
+                    className={cn(
+                      "text-sm md:text-base font-bold text-white transition-opacity duration-300",
+                      barsVisible ? "opacity-100" : "opacity-0"
+                    )}
+                    style={{ transitionDelay: '800ms' }}
+                  >
+                    {afterData.moneyBar.displayValue}
+                  </span>
+                </div>
+              </div>
+              <span className="text-xs text-muted-foreground mt-2 text-center">
+                {afterData.moneyBar.label}
+              </span>
+            </div>
+          </div>
+
+          <p className="text-center text-sm md:text-base text-muted-foreground">
+            {afterData.description}
+          </p>
+        </CardContent>
+      </Card>
+    );
+  };
+
   return (
     <section id="esco-model" className="py-24 bg-secondary">
       <div className="container mx-auto px-4">
@@ -140,7 +590,6 @@ const ESCODiagram = () => {
           </p>
         </AnimatedSection>
 
-        {/* Shadcn Tabs with mobile swipe support */}
         <AnimatedSection delay={200}>
           <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full mb-12">
             {/* Desktop tabs */}
@@ -200,7 +649,7 @@ const ESCODiagram = () => {
                 {phaseOrder.map((phase) => (
                   <button
                     key={phase}
-                    onClick={() => setActiveTab(phase)}
+                    onClick={() => handleTabChange(phase)}
                     className={cn(
                       "w-2 h-2 rounded-full transition-all",
                       activeTab === phase 
@@ -218,52 +667,15 @@ const ESCODiagram = () => {
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
             >
-              {phases.map((phase) => (
-                <TabsContent key={phase.id} value={phase.id}>
-                  <Card>
-                    <CardHeader className="pb-4 md:pb-6">
-                      <CardTitle className="text-lg md:text-xl">{phase.title}</CardTitle>
-                      <CardDescription>{phase.subtitle}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      {/* Bars container */}
-                      <div className="flex items-end justify-center gap-2 md:gap-4 h-48 md:h-64 mb-6">
-                        {phase.bars.map((bar, barIndex) => (
-                          <div key={barIndex} className="flex flex-col items-center flex-1 max-w-24 md:max-w-32">
-                            <div 
-                              className={cn(
-                                "w-full rounded-t-lg transition-all duration-1000 ease-out flex items-end justify-center pb-2 md:pb-3",
-                                bar.color
-                              )}
-                              style={{ 
-                                height: barsVisible ? `${bar.percent * 1.8}px` : '0px',
-                                transitionDelay: `${barIndex * 150}ms`
-                              }}
-                            >
-                              <span 
-                                className={cn(
-                                  "text-[10px] md:text-xs text-center font-medium px-1 md:px-2 leading-tight text-foreground transition-opacity duration-300",
-                                  barsVisible ? "opacity-100" : "opacity-0"
-                                )}
-                                style={{ transitionDelay: `${barIndex * 150 + 600}ms` }}
-                              >
-                                {bar.percent}%
-                              </span>
-                            </div>
-                            <span className="text-[10px] md:text-xs text-center text-muted-foreground mt-2 leading-tight">
-                              {bar.label}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-
-                      <p className="text-center text-sm md:text-base text-muted-foreground">
-                        {phase.description}
-                      </p>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-              ))}
+              <TabsContent value="before">
+                {renderBeforePhase()}
+              </TabsContent>
+              <TabsContent value="during">
+                {renderDuringPhase()}
+              </TabsContent>
+              <TabsContent value="after">
+                {renderAfterPhase()}
+              </TabsContent>
             </div>
           </Tabs>
         </AnimatedSection>
