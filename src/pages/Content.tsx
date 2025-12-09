@@ -17,7 +17,11 @@ import {
   Headphones,
   Volume2,
   Pointer,
-  LayoutGrid
+  LayoutGrid,
+  Hotel,
+  Megaphone,
+  FileX,
+  Users
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -42,6 +46,16 @@ const advantages = [
     icon: Headphones,
     title: "Поддержка 24/7",
     description: "Техподдержка и управление контентом по вашему запросу"
+  },
+  {
+    icon: FileX,
+    title: "Без печатной продукции",
+    description: "Экономия на полиграфии — меняйте контент мгновенно без затрат"
+  },
+  {
+    icon: Users,
+    title: "Меньше рутины",
+    description: "Централизованное управление — без обхода и ручной загрузки на устройства"
   }
 ];
 
@@ -164,6 +178,18 @@ const useCases = [
     title: "Офисы и БЦ",
     description: "Корпоративные коммуникации, новости, события",
     result: "Единое информационное пространство"
+  },
+  {
+    icon: Hotel,
+    title: "HoReCa и туризм",
+    description: "Санатории, гостиницы, базы отдыха — навигация, управление потоками гостей, продвижение услуг и свободных кабинетов",
+    result: "Повышение загрузки дополнительных услуг"
+  },
+  {
+    icon: Megaphone,
+    title: "Рекламные площадки",
+    description: "Монетизация экранов через продажу рекламного времени внешним производителям и поставщикам услуг",
+    result: "Дополнительный источник дохода"
   }
 ];
 
@@ -241,7 +267,7 @@ const Content = () => {
       {/* Advantages */}
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {advantages.map((adv, index) => (
               <div key={index} className="bg-card rounded-2xl p-6 border border-border text-center">
                 <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
