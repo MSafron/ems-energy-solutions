@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { CheckCircle, Building2, Wallet, ChevronLeft, ChevronRight } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,8 +7,10 @@ import { cn } from "@/lib/utils";
 
 const ESCODiagram = () => {
   const [activeTab, setActiveTab] = useState("before");
+  const [barsVisible, setBarsVisible] = useState(false);
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
+  const diagramRef = useRef<HTMLDivElement>(null);
   
   const phases = [
     {
@@ -59,6 +61,31 @@ const ESCODiagram = () => {
   ];
 
   const phaseOrder = ["before", "during", "after"];
+
+  // Intersection Observer для запуска анимации баров
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setBarsVisible(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (diagramRef.current) {
+      observer.observe(diagramRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Перезапуск анимации при смене таба
+  const handleTabChange = (value: string) => {
+    setBarsVisible(false);
+    setActiveTab(value);
+    setTimeout(() => setBarsVisible(true), 50);
+  };
   
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
@@ -77,9 +104,9 @@ const ESCODiagram = () => {
     if (Math.abs(diff) > minSwipeDistance) {
       const currentIndex = phaseOrder.indexOf(activeTab);
       if (diff > 0 && currentIndex < phaseOrder.length - 1) {
-        setActiveTab(phaseOrder[currentIndex + 1]);
+        handleTabChange(phaseOrder[currentIndex + 1]);
       } else if (diff < 0 && currentIndex > 0) {
-        setActiveTab(phaseOrder[currentIndex - 1]);
+        handleTabChange(phaseOrder[currentIndex - 1]);
       }
     }
     
@@ -90,14 +117,14 @@ const ESCODiagram = () => {
   const goToPrevious = () => {
     const currentIndex = phaseOrder.indexOf(activeTab);
     if (currentIndex > 0) {
-      setActiveTab(phaseOrder[currentIndex - 1]);
+      handleTabChange(phaseOrder[currentIndex - 1]);
     }
   };
 
   const goToNext = () => {
     const currentIndex = phaseOrder.indexOf(activeTab);
     if (currentIndex < phaseOrder.length - 1) {
-      setActiveTab(phaseOrder[currentIndex + 1]);
+      handleTabChange(phaseOrder[currentIndex + 1]);
     }
   };
 
@@ -115,7 +142,7 @@ const ESCODiagram = () => {
 
         {/* Shadcn Tabs with mobile swipe support */}
         <AnimatedSection delay={200}>
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mb-12">
+          <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full mb-12">
             {/* Desktop tabs */}
             <TabsList className="hidden md:grid w-full grid-cols-3 mb-8">
               <TabsTrigger value="before">До контракта</TabsTrigger>
@@ -186,6 +213,7 @@ const ESCODiagram = () => {
             </div>
             
             <div
+              ref={diagramRef}
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
@@ -203,10 +231,22 @@ const ESCODiagram = () => {
                         {phase.bars.map((bar, barIndex) => (
                           <div key={barIndex} className="flex flex-col items-center flex-1 max-w-24 md:max-w-32">
                             <div 
-                              className={`w-full ${bar.color} rounded-t-lg transition-all duration-700 ease-out flex items-end justify-center pb-2 md:pb-3`}
-                              style={{ height: `${bar.percent * 1.8}px` }}
+                              className={cn(
+                                "w-full rounded-t-lg transition-all duration-1000 ease-out flex items-end justify-center pb-2 md:pb-3",
+                                bar.color
+                              )}
+                              style={{ 
+                                height: barsVisible ? `${bar.percent * 1.8}px` : '0px',
+                                transitionDelay: `${barIndex * 150}ms`
+                              }}
                             >
-                              <span className="text-[10px] md:text-xs text-center font-medium px-1 md:px-2 leading-tight text-foreground">
+                              <span 
+                                className={cn(
+                                  "text-[10px] md:text-xs text-center font-medium px-1 md:px-2 leading-tight text-foreground transition-opacity duration-300",
+                                  barsVisible ? "opacity-100" : "opacity-0"
+                                )}
+                                style={{ transitionDelay: `${barIndex * 150 + 600}ms` }}
+                              >
                                 {bar.percent}%
                               </span>
                             </div>
