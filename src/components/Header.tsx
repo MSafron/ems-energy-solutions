@@ -48,6 +48,7 @@ const Header = () => {
   const navItems = [
     { label: "О компании", id: "about" },
     { label: "Преимущества", id: "advantages" },
+    { label: "Новости", path: "/news" },
     { label: "Контакты", id: "contact" },
   ];
 
@@ -107,6 +108,13 @@ const Header = () => {
             >
               Преимущества
             </button>
+
+            <Link 
+              to="/news"
+              className="text-foreground/70 hover:text-foreground transition-colors font-medium"
+            >
+              Новости
+            </Link>
             
             <button 
               onClick={() => scrollToSection("contact")} 
@@ -168,6 +176,14 @@ const Header = () => {
             >
               Преимущества
             </button>
+
+            <Link 
+              to="/news"
+              className="text-foreground/70 hover:text-foreground transition-colors font-medium text-left py-2"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Новости
+            </Link>
             
             <button 
               onClick={() => scrollToSection("contact")} 
