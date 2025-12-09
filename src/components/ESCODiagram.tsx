@@ -341,17 +341,17 @@ const ESCODiagram = () => {
     subtitle: "Навсегда",
     description: "Оборудование ваше, вся экономия остаётся у вас навсегда",
     energySegments: [
-      { percent: 80, color: "bg-accent", label: "Экономия" },
       { percent: 20, color: "bg-muted-foreground/50", label: "Потребление" },
+      { percent: 80, color: "bg-accent", label: "Экономия" },
     ],
     // Столбец выгоды = высота как "Год 4" (139%)
     // Базовая часть (100%) = 20% потребление + 80% экономия заказчика
     // Дополнительная часть (+39%) = экономия от роста тарифа (139 - 100)
     benefitTotalHeight: 139,
     benefitSegments: [
-      { percent: 39, color: "bg-green-600", label: "От роста тарифа" },
-      { percent: 80, color: "bg-accent", label: "Экономия заказчика" },
       { percent: 20, color: "bg-muted-foreground/50", label: "Потребление" },
+      { percent: 80, color: "bg-accent", label: "Экономия заказчика" },
+      { percent: 39, color: "bg-green-600", label: "От роста тарифа" },
     ]
   };
 
