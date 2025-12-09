@@ -8,6 +8,7 @@ import Projects from "@/components/Projects";
 import Portal from "@/components/Portal";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import { NewsSection } from "@/components/news/NewsSection";
 
 const Index = () => {
   return (
@@ -17,6 +18,7 @@ const Index = () => {
       <About />
       <Values />
       <Directions />
+      <NewsSection />
       <ESCODiagram />
       <Projects />
       <Portal />
