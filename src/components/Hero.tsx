@@ -34,7 +34,7 @@ const Hero = () => {
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-2xl space-y-8 text-left">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[hsl(0,0%,98%)] leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[hsl(0,0%,98%)] leading-tight break-words">
             Инвестируем в{" "}
             <span className="gradient-text">энергоэффективность</span>
           </h1>
