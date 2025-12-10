@@ -5,7 +5,7 @@ const projects = [
   {
     title: "Уличное освещение",
     location: "Раменский район, Московская область",
-    type: "Энергосервисный контракт",
+    type: "Договор подряда (поэтапная замена)",
     status: "В работе",
     statusVariant: "default" as const
   },
@@ -14,6 +14,22 @@ const projects = [
     description: "Лизинг оборудования для доступа к МИС",
     type: "Комплексное решение",
     status: "Активный",
+    statusVariant: "secondary" as const
+  },
+  {
+    title: "Газо-поршневой энергоцентр 250 кВт",
+    description: "Установка энергоцентра для автономного энергоснабжения гостиницы",
+    location: "г. Саранск, гостиница Radisson",
+    type: "Энергосервисный контракт",
+    status: "Активный",
+    statusVariant: "default" as const
+  },
+  {
+    title: "Энергоцентр 500 кВт для ТЦ SPAR",
+    description: "Проект установки энергоцентра для торгового центра",
+    location: "г. Саранск, ТЦ SPAR",
+    type: "Энергосервисный контракт",
+    status: "В работе",
     statusVariant: "secondary" as const
   }
 ];
@@ -28,7 +44,7 @@ const Projects = () => {
           </h2>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
           {projects.map((project, index) => (
             <div 
               key={index} 
