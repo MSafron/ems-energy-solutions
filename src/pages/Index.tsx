@@ -18,9 +18,9 @@ const Index = () => {
       <About />
       <Values />
       <Directions />
-      <NewsSection />
       <ESCODiagram />
       <Projects />
+      <NewsSection />
       <Portal />
       <Contact />
       <Footer />

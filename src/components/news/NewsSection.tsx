@@ -39,7 +39,7 @@ export function NewsSection() {
   return (
     <section className="py-12 bg-muted/50">
       <div className="container mx-auto px-4">
-        <NewsSlider news={news} title="Актуальные новости энергетики" />
+        <NewsSlider news={news} title="Актуальные новости" />
       </div>
     </section>
   );

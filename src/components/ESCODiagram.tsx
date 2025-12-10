@@ -78,7 +78,7 @@ const Bar3D = ({
           {growthLabel && (
             <span 
               className={cn(
-                "absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] md:text-xs font-bold text-destructive transition-opacity duration-300 whitespace-nowrap",
+                "absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] md:text-xs font-bold text-amber-600 transition-opacity duration-300 whitespace-nowrap",
                 visible ? "opacity-100" : "opacity-0"
               )}
               style={{ transitionDelay: `${delay + 800}ms` }}
@@ -141,9 +141,9 @@ const Bar3D = ({
         <TooltipContent className="bg-popover border shadow-lg">
           <div className="text-xs space-y-1">
             <p>Потребление: <span className="font-medium">{tooltipData.consumption}</span></p>
-            <p>Стоимость: <span className="font-medium text-destructive">{tooltipData.cost}</span></p>
+            <p>Стоимость: <span className="font-medium text-amber-600">{tooltipData.cost}</span></p>
             {tooltipData.growth && (
-              <p>Рост тарифа: <span className="font-medium text-destructive">{tooltipData.growth}</span></p>
+              <p>Рост тарифа: <span className="font-medium text-amber-600">{tooltipData.growth}</span></p>
             )}
           </div>
         </TooltipContent>
@@ -220,7 +220,7 @@ const StackedBar3D = ({
           {growthLabel && (
             <span 
               className={cn(
-                "absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] md:text-xs font-bold text-destructive transition-opacity duration-300 whitespace-nowrap",
+                "absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] md:text-xs font-bold text-amber-600 transition-opacity duration-300 whitespace-nowrap",
                 visible ? "opacity-100" : "opacity-0"
               )}
               style={{ transitionDelay: `${delay + 800}ms` }}
@@ -284,9 +284,9 @@ const StackedBar3D = ({
           <div className="text-xs space-y-1">
             <p>Потребление: <span className="font-medium">{tooltipData.consumption}</span></p>
             <p>Ваша экономия: <span className="font-medium text-accent">{tooltipData.saving}</span></p>
-            <p>Без контракта: <span className="font-medium text-destructive">{tooltipData.withoutContract}</span></p>
+            <p>Без контракта: <span className="font-medium text-amber-600">{tooltipData.withoutContract}</span></p>
             {tooltipData.growth && (
-              <p>Рост тарифа: <span className="font-medium text-destructive">{tooltipData.growth}</span></p>
+              <p>Рост тарифа: <span className="font-medium text-amber-600">{tooltipData.growth}</span></p>
             )}
           </div>
         </TooltipContent>
@@ -325,7 +325,7 @@ const ESCODiagram = () => {
     segments: [
       { percent: 70, color: "bg-primary", label: "Погашение" },
       { percent: 10, color: "bg-accent", label: "Экономия" },
-      { percent: 20, color: "bg-muted-foreground/50", label: "Потребление" },
+      { percent: 20, color: "bg-primary/30", label: "Потребление" },
     ],
     years: [
       { label: "Год 1", money: 104, growth: "+4%", consumption: "200 кВт·ч", saving: "10%", withoutContract: "104%" },
@@ -341,7 +341,7 @@ const ESCODiagram = () => {
     subtitle: "Навсегда",
     description: "Оборудование ваше, вся экономия остаётся у вас навсегда",
     energySegments: [
-      { percent: 20, color: "bg-muted-foreground/50", label: "Потребление" },
+      { percent: 20, color: "bg-primary/30", label: "Потребление" },
       { percent: 80, color: "bg-accent", label: "Экономия" },
     ],
     // Столбец выгоды = высота как "Год 4" (139%)
@@ -349,9 +349,9 @@ const ESCODiagram = () => {
     // Дополнительная часть (+39%) = экономия от роста тарифа (139 - 100)
     benefitTotalHeight: 139,
     benefitSegments: [
-      { percent: 20, color: "bg-muted-foreground/50", label: "Потребление" },
+      { percent: 20, color: "bg-primary/30", label: "Потребление" },
       { percent: 80, color: "bg-accent", label: "Экономия заказчика" },
-      { percent: 39, color: "bg-green-600", label: "От роста тарифа" },
+      { percent: 39, color: "bg-accent/80", label: "От роста тарифа" },
     ]
   };
 
@@ -452,11 +452,11 @@ const ESCODiagram = () => {
         {/* Легенда */}
         <div className="flex flex-wrap justify-center gap-3 md:gap-6 mb-4 text-[10px] md:text-xs">
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-muted-foreground/60 rounded" />
+            <div className="w-3 h-3 bg-primary/40 rounded" />
             <span className="text-muted-foreground">Натуральные ед.</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-destructive/30 border border-destructive/50 rounded" />
+            <div className="w-3 h-3 bg-amber-500/30 border border-amber-500/50 rounded" />
             <span className="text-muted-foreground">Деньги (₽)</span>
           </div>
         </div>
@@ -467,8 +467,8 @@ const ESCODiagram = () => {
               key={idx}
               naturalHeight={year.natural}
               moneyHeight={year.money}
-              naturalColor="bg-muted-foreground/60"
-              moneyColor="bg-destructive/30 border-destructive/50"
+              naturalColor="bg-primary/40"
+              moneyColor="bg-amber-500/30 border-amber-500/50"
               label={year.label}
               naturalLabel={idx === 0 ? "100%" : ""}
               growthLabel={year.growth}
@@ -484,7 +484,7 @@ const ESCODiagram = () => {
         </div>
         
         <div className="text-center mb-2">
-          <span className="text-xs text-destructive font-medium">
+          <span className="text-xs text-amber-600 font-medium">
             ← Индексация тарифа →
           </span>
         </div>
@@ -515,11 +515,11 @@ const ESCODiagram = () => {
             <span className="text-muted-foreground">Экономия</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="w-2.5 h-2.5 md:w-3 md:h-3 bg-muted-foreground/50 rounded" />
+            <div className="w-2.5 h-2.5 md:w-3 md:h-3 bg-primary/30 rounded" />
             <span className="text-muted-foreground">Потребление</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="w-2.5 h-2.5 md:w-3 md:h-3 bg-destructive/30 border border-destructive/50 rounded" />
+            <div className="w-2.5 h-2.5 md:w-3 md:h-3 bg-amber-500/30 border border-amber-500/50 rounded" />
             <span className="text-muted-foreground">Без контракта</span>
           </div>
         </div>
@@ -531,7 +531,7 @@ const ESCODiagram = () => {
               key={idx}
               segments={duringData.segments}
               moneyHeight={year.money}
-              moneyColor="bg-destructive/30 border-destructive/50"
+              moneyColor="bg-amber-500/30 border-amber-500/50"
               label={year.label}
               growthLabel={year.growth}
               visible={barsVisible}
@@ -574,7 +574,7 @@ const ESCODiagram = () => {
           {/* Легенда */}
           <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-4 text-[10px] md:text-xs">
             <div className="flex items-center gap-1.5">
-              <div className="w-2.5 h-2.5 md:w-3 md:h-3 bg-muted-foreground/50 rounded" />
+              <div className="w-2.5 h-2.5 md:w-3 md:h-3 bg-primary/30 rounded" />
               <span className="text-muted-foreground">Потребление</span>
             </div>
             <div className="flex items-center gap-1.5">
@@ -582,7 +582,7 @@ const ESCODiagram = () => {
               <span className="text-muted-foreground">Экономия заказчика (80%)</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-2.5 h-2.5 md:w-3 md:h-3 bg-green-600 rounded" />
+              <div className="w-2.5 h-2.5 md:w-3 md:h-3 bg-accent/80 rounded" />
               <span className="text-muted-foreground">Доп. экономия от тарифа (+39%)</span>
             </div>
           </div>
@@ -689,7 +689,7 @@ const ESCODiagram = () => {
                 <div className="text-xs space-y-1">
                   <p>Потребление: <span className="font-medium">20%</span></p>
                   <p>Экономия заказчика: <span className="font-medium text-accent">80%</span></p>
-                  <p>Доп. экономия от роста тарифа: <span className="font-medium text-green-600">+39%</span></p>
+                  <p>Доп. экономия от роста тарифа: <span className="font-medium text-accent">+39%</span></p>
                   <p className="pt-1 border-t border-border mt-1">Итого выгода: <span className="font-bold">139%</span> (как Год 4)</p>
                 </div>
               </TooltipContent>
