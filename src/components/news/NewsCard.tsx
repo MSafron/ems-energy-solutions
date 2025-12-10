@@ -1,6 +1,6 @@
 import { formatDistanceToNow } from 'date-fns';
 import { ru } from 'date-fns/locale';
-import { ExternalLink, Eye, Heart, Zap } from 'lucide-react';
+import { ExternalLink, Eye, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ShareButton } from './ShareButton';
@@ -26,49 +26,51 @@ export function NewsCard({ news }: NewsCardProps) {
   );
 
   const categoryClass = CATEGORY_COLORS[news.category] || CATEGORY_COLORS['Энергетика'];
+  const hasImage = !!news.image_url;
 
   return (
-    <article className="bg-card rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col h-full border border-border">
-      {/* Image */}
-      <div className="relative aspect-video bg-gradient-to-br from-primary to-accent overflow-hidden">
-        {news.image_url ? (
+    <article className={`bg-card rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col h-full border border-border ${!hasImage ? 'border-l-4 border-l-primary' : ''}`}>
+      {/* Image - only if exists */}
+      {hasImage && (
+        <div className="relative aspect-video overflow-hidden">
           <img
             src={news.image_url}
             alt={news.title}
             className="w-full h-full object-cover"
             loading="lazy"
           />
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <Zap className="w-16 h-16 text-primary-foreground/50" />
-          </div>
-        )}
-        {news.source === 'telegram' && (
-          <div className="absolute top-3 right-3 bg-[#0088cc] text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
-            <span>📱</span> Telegram
-          </div>
-        )}
-      </div>
+          {news.source === 'telegram' && (
+            <div className="absolute top-3 right-3 bg-[#0088cc] text-primary-foreground text-xs px-2 py-1 rounded-full flex items-center gap-1">
+              <span>📱</span> Telegram
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Content */}
-      <div className="p-4 flex flex-col flex-grow">
-        {/* Metadata */}
-        <div className="flex items-center justify-between mb-3">
-          <span className={`text-xs px-2 py-1 rounded-full ${categoryClass}`}>
+      <div className="p-5 flex flex-col flex-grow">
+        {/* Metadata header */}
+        <div className="flex items-center flex-wrap gap-2 mb-3">
+          <span className={`text-xs px-2 py-1 rounded-full font-medium ${categoryClass}`}>
             {news.category}
           </span>
-          <span className="text-xs text-muted-foreground">{relativeDate}</span>
+          {!hasImage && news.source === 'telegram' && (
+            <span className="text-xs px-2 py-1 rounded-full bg-[#0088cc]/10 text-[#0088cc]">
+              📱 Telegram
+            </span>
+          )}
+          <span className="text-xs text-muted-foreground ml-auto">{relativeDate}</span>
         </div>
 
         {/* Title */}
         <Link to={`/news/${news.slug}`}>
-          <h3 className="font-bold text-lg mb-2 line-clamp-2 hover:text-primary transition-colors">
+          <h3 className={`font-bold mb-3 line-clamp-2 hover:text-primary transition-colors ${hasImage ? 'text-lg' : 'text-xl'}`}>
             {news.title}
           </h3>
         </Link>
 
         {/* Description */}
-        <p className="text-muted-foreground text-sm mb-4 line-clamp-3 flex-grow">
+        <p className={`text-muted-foreground text-sm mb-4 flex-grow ${hasImage ? 'line-clamp-3' : 'line-clamp-4'}`}>
           {cleanDescription}...
         </p>
 
