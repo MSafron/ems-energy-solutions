@@ -67,7 +67,7 @@ const Header = () => {
           </Link>
 
           {/* Desktop navigation */}
-          <nav className="hidden md:flex items-center gap-6">
+          <nav className="hidden lg:flex items-center gap-6">
             <button 
               onClick={() => scrollToSection("about")} 
               className="text-foreground/70 hover:text-foreground transition-colors font-medium"
@@ -102,12 +102,6 @@ const Header = () => {
               )}
             </div>
             
-            <button 
-              onClick={() => scrollToSection("advantages")} 
-              className="text-foreground/70 hover:text-foreground transition-colors font-medium"
-            >
-              Преимущества
-            </button>
 
             <Link 
               to="/news"
@@ -124,7 +118,7 @@ const Header = () => {
             </button>
           </nav>
 
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             <Button onClick={() => window.open('https://shop.emc3.ru', '_blank')}>
               Портал решений
             </Button>
@@ -132,7 +126,7 @@ const Header = () => {
 
           {/* Mobile menu button */}
           <button 
-            className="md:hidden p-2"
+            className="lg:hidden p-2"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? (
@@ -146,7 +140,7 @@ const Header = () => {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-background border-b border-border">
+        <div className="lg:hidden bg-background border-b border-border">
           <nav className="container mx-auto px-4 py-4 flex flex-col gap-2">
             <button 
               onClick={() => scrollToSection("about")} 
@@ -170,12 +164,6 @@ const Header = () => {
               ))}
             </div>
             
-            <button 
-              onClick={() => scrollToSection("advantages")} 
-              className="text-foreground/70 hover:text-foreground transition-colors font-medium text-left py-2"
-            >
-              Преимущества
-            </button>
 
             <Link 
               to="/news"
