@@ -1,5 +1,6 @@
 import PageLayout from "@/components/layout/PageLayout";
 import ProductCard from "@/components/products/ProductCard";
+import SEO from "@/components/SEO";
 import { 
   Lightbulb, 
   Thermometer, 
@@ -147,6 +148,12 @@ const Energy = () => {
 
   return (
     <PageLayout>
+      <SEO 
+        title="Энергетические решения | ЕМС.3 — Энергосервисная компания"
+        description="Светодиодное освещение, автоматизация отопления, частотные привода, котельные. Экономия 30-92% без капитальных вложений. Мы инвестируем — вы экономите."
+        keywords="светодиодное освещение, автоматизация отопления, САРТ, ЧРП, блочно-модульные котельные, энергосбережение, лизинг оборудования"
+        url="https://emc3.ru/energy"
+      />
       {/* Hero */}
       <section className="py-20 bg-gradient-to-b from-primary/5 to-background">
         <div className="container mx-auto px-4">

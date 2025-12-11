@@ -36,7 +36,7 @@ const Hero = () => {
         <div className="max-w-2xl space-y-8 text-left">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[hsl(0,0%,98%)] leading-tight break-words">
             Инвестируем в{" "}
-            <span className="gradient-text">энергоэффективность</span>
+            <span className="gradient-text">энергосбережение</span>
           </h1>
           
           <p className="text-lg md:text-xl text-[hsl(220,9%,70%)] leading-relaxed">

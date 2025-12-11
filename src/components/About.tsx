@@ -4,7 +4,7 @@ const About = () => {
   return (
     <section id="about" className="py-24 bg-background">
       <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto scroll-animate">
+        <div className="max-w-4xl mx-auto">
           <div className="flex flex-col md:flex-row items-center gap-12">
             {/* Visual */}
             <div className="flex-shrink-0">
