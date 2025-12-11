@@ -27,7 +27,7 @@ const Values = () => {
   return (
     <section className="py-24 bg-secondary">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16 scroll-animate">
+        <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
             Наши принципы
           </h2>
@@ -37,7 +37,7 @@ const Values = () => {
           {values.map((value, index) => (
             <div 
               key={index} 
-              className="bg-background rounded-xl p-6 shadow-sm border border-border card-hover scroll-animate"
+              className="bg-background rounded-xl p-6 shadow-sm border border-border card-hover"
             >
               <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-5">
                 <value.icon className="w-7 h-7 text-primary" />

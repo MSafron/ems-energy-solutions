@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
+import SEO from '@/components/SEO';
 import Footer from '@/components/Footer';
 import { NewsCard } from '@/components/news/NewsCard';
 import { CategoryFilter } from '@/components/news/CategoryFilter';
@@ -24,17 +25,27 @@ export default function News() {
 
   return (
     <>
+      <SEO 
+        title="Новости энергетики и энергоэффективности | ЕМС.3"
+        description="Актуальные новости энергетического рынка России: тарифы, регулирование, зелёная энергетика, LED-освещение, автоматизация. Экспертная аналитика от ЕМС.3"
+        keywords="новости энергетики, энергоэффективность, LED освещение, тарифы ЖКХ, зелёная энергетика, энергосбережение"
+        url="https://emc3.ru/news"
+        type="website"
+      />
       <Helmet>
-        <title>Новости энергетики и энергоэффективности | EMC3</title>
-        <meta
-          name="description"
-          content="Актуальные новости энергетического рынка России: тарифы, регулирование, зелёная энергетика, LED-освещение, автоматизация"
-        />
-        <link rel="canonical" href="https://emc3.ru/news" />
-        <meta property="og:title" content="Новости энергетики | EMC3" />
-        <meta property="og:description" content="Актуальные новости энергетического рынка России" />
-        <meta property="og:url" content="https://emc3.ru/news" />
-        <meta property="og:type" content="website" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "name": "Новости энергетики",
+            "description": "Актуальные новости энергетического рынка России",
+            "url": "https://emc3.ru/news",
+            "publisher": {
+              "@type": "Organization",
+              "name": "ЕМС.3"
+            }
+          })}
+        </script>
       </Helmet>
 
       <div className="min-h-screen bg-background flex flex-col">

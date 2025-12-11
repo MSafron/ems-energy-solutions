@@ -1,5 +1,6 @@
 import PageLayout from "@/components/layout/PageLayout";
 import UseCaseCard from "@/components/products/UseCaseCard";
+import SEO from "@/components/SEO";
 import { 
   Activity, 
   Database, 
@@ -124,6 +125,12 @@ const Platform = () => {
 
   return (
     <PageLayout>
+      <SEO 
+        title="Платформа управления энергоданными | ЕМС.3"
+        description="Цифровая платформа для мониторинга и диспетчеризации энергетических объектов. От одного устройства до целого региона. Сбор данных, анализ, визуализация, телеуправление."
+        keywords="диспетчеризация котельных, мониторинг ЦТП, SCADA, управление энергоданными, BMS, автоматизация зданий"
+        url="https://emc3.ru/platform"
+      />
       {/* Hero */}
       <section className="py-20 bg-gradient-to-b from-primary/5 to-background">
         <div className="container mx-auto px-4">
