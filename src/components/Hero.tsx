@@ -16,21 +16,24 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden pt-20">
-      {/* Background video */}
+    <section className="relative min-h-screen flex items-center overflow-hidden pt-20 bg-[hsl(240,29%,8%)]">
+      {/* Background video - приглушённое */}
       <video
         ref={videoRef}
         autoPlay
         muted
         loop
         playsInline
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover opacity-30"
       >
         <source src="/videos/hero-bg.mp4" type="video/mp4" />
       </video>
 
-      {/* Dark overlay for text readability */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[hsl(240,29%,8%)]/90 via-[hsl(223,76%,15%)]/70 to-transparent" />
+      {/* Основной затемняющий слой */}
+      <div className="absolute inset-0 bg-[hsl(240,29%,8%)]/60" />
+      
+      {/* Акцентный градиент слева для глубины */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[hsl(223,76%,15%)]/40 to-transparent" />
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-2xl space-y-8 text-left">
