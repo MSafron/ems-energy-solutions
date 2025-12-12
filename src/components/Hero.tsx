@@ -27,14 +27,14 @@ const Hero = () => {
         playsInline
         onLoadedData={() => setVideoLoaded(true)}
         className={`absolute inset-0 w-full h-full object-cover blur-sm transition-opacity duration-1000 ease-out ${
-          videoLoaded ? 'opacity-30' : 'opacity-0'
+          videoLoaded ? 'opacity-50' : 'opacity-0'
         }`}
       >
         <source src="/videos/hero-bg.mp4" type="video/mp4" />
       </video>
 
       {/* Основной затемняющий слой */}
-      <div className="absolute inset-0 bg-[hsl(240,29%,8%)]/60" />
+      <div className="absolute inset-0 bg-[hsl(240,29%,8%)]/40" />
       
       {/* Акцентный градиент слева для глубины */}
       <div className="absolute inset-0 bg-gradient-to-r from-[hsl(223,76%,15%)]/40 to-transparent" />
