@@ -30,7 +30,7 @@ const Hero = () => {
           videoLoaded ? 'opacity-50' : 'opacity-0'
         }`}
       >
-        <source src="/videos/hero-bg.mp4" type="video/mp4" />
+        <source src="/videos/kling_20251211_VIDEO_Video1_Ele_725_0.mp4" type="video/mp4" />
       </video>
 
       {/* Основной затемняющий слой */}

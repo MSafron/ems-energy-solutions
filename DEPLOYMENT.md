@@ -54,7 +54,8 @@ ems-energy-solutions/
 │   ├── robots.txt
 │   ├── sitemap.xml
 │   └── videos/
-│       └── hero-bg.mp4
+│       ├── hero-bg.mp4
+│       └── kling_20251211_VIDEO_Video1_Ele_725_0.mp4
 ├── src/
 │   ├── assets/
 │   │   ├── emc3-cube.png
@@ -408,29 +409,76 @@ export const useNewsArticle = (slug: string) => {
 
 ### 5. Обновить `src/components/Contact.tsx`
 
+Форма остаётся **на сайте (наш дизайн)**, но отправка идёт **на email** через Supabase Edge Function `send-contact-email`.
+
 ```typescript
-// Добавить функцию отправки формы
+type SendContactEmailResponse = { ok: true } | { error: string };
+
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
-  
-  const { error } = await supabase
-    .from('contact_requests')
-    .insert({
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-      company: formData.company,
-      message: formData.message,
-    });
 
-  if (error) {
-    toast.error('Ошибка отправки. Попробуйте позже.');
+  const { data, error } = await supabase.functions.invoke<SendContactEmailResponse>(
+    "send-contact-email",
+    {
+      body: {
+        name: form.name.trim(),
+        phone: form.phone.trim() || undefined,
+        email: form.email.trim() || undefined,
+        message: form.message.trim() || undefined,
+      },
+    },
+  );
+
+  const serverError = data && "error" in data ? data.error : null;
+
+  if (error || serverError) {
+    // показать toast "ошибка отправки"
     return;
   }
 
-  toast.success('Заявка отправлена!');
-  setFormData({ name: '', email: '', phone: '', company: '', message: '' });
+  // показать toast "заявка отправлена" + очистить форму
 };
+```
+
+### 6. Деплой Supabase Edge Function `send-contact-email`
+
+#### 6.1 Конфиг функции (без JWT)
+
+В [`ems-energy-solutions/supabase/config.toml`](ems-energy-solutions/supabase/config.toml:1) добавлено:
+- `verify_jwt = false` для `send-contact-email` (иначе публичный сайт получит `401`).
+
+#### 6.2 Secrets (ставятся на сервере/Supabase, НЕ в frontend)
+
+Обязательные:
+- `SMTP_USERNAME` — `noreply@emc3.ru`
+- `SMTP_PASSWORD` — пароль / app-password
+- `MAIL_TO` — `info@emc3.ru`
+
+Рекомендуемые:
+- `SMTP_HOST` — `mail.hosting.reg.ru` (или `mail.emc3.ru`)
+- `SMTP_PORT` — `465` (TLS)
+- `MAIL_FROM` — `noreply@emc3.ru`
+- `MAIL_SUBJECT` — `Заявка с emc3.ru`
+- `ALLOWED_ORIGINS` — `https://emc3.ru,https://www.emc3.ru` (ограничение CORS)
+
+#### 6.3 Команды деплоя (пример)
+
+```bash
+# логин/линк проекта (один раз)
+supabase login
+supabase link --project-ref vqgmehfchtybxpiiuxct
+
+# деплой функции
+supabase functions deploy send-contact-email
+
+# установка секретов (пример)
+supabase secrets set SMTP_USERNAME="noreply@emc3.ru"
+supabase secrets set SMTP_PASSWORD="***"
+supabase secrets set MAIL_TO="info@emc3.ru"
+supabase secrets set SMTP_HOST="mail.hosting.reg.ru"
+supabase secrets set SMTP_PORT="465"
+supabase secrets set MAIL_FROM="noreply@emc3.ru"
+supabase secrets set ALLOWED_ORIGINS="https://emc3.ru,https://www.emc3.ru"
 ```
 
 ---
@@ -641,7 +689,8 @@ sequenceDiagram
 
 - [ ] Обновить `src/integrations/supabase/client.ts`
 - [ ] Обновить `src/hooks/useNews.ts` — убрать MOCK_NEWS
-- [ ] Реализовать отправку формы в `src/components/Contact.tsx`
+- [ ] Реализовать отправку формы в `src/components/Contact.tsx` через `supabase.functions.invoke("send-contact-email")`
+- [ ] Деплой Supabase Edge Function `send-contact-email` + установка secrets
 - [ ] Тестировать локально с production env
 
 ### Сервер
@@ -705,4 +754,4 @@ ALTER SYSTEM SET "app.cors_allowed_origins" = 'https://emc3.ru,https://www.emc3.
 ---
 
 *Документ создан: 2025-01-12*
-*Последнее обновление: 2025-01-12*
+*Последнее обновление: 2025-12-13*
